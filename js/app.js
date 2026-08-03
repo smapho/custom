@@ -2,12 +2,39 @@ import { fetchProductBySlug, saveDesign } from './supabase.js';
 
 const PRODUCT_SLUG = 'custom-bottle';
 
+const CAP_IMAGES = {
+  '黒': '/images/caps/black.jpg',
+  '金': '/images/caps/gold.jpg',
+  '銀': '/images/caps/silver.jpg',
+  '赤': '/images/caps/red.jpg',
+  '青': '/images/caps/blue.jpg',
+};
+
+const BOTTLE_IMAGES = {
+  '光沢 茶色': '/images/bottles/brown_g.jpg',
+  '光沢 緑': '/images/bottles/green_g.jpg',
+  '光沢 青': '/images/bottles/blue_g.jpg',
+  'つや消し 青': '/images/bottles/blue_f.jpg',
+  'つや消し 白': '/images/bottles/white_f.jpg',
+  'つや消し 黒': '/images/bottles/black_f.jpg',
+  'つや消し 緑': '/images/bottles/green_f.jpg',
+};
+
+const NECK_LABEL_IMAGES = {
+  '手書き 赤文字': '/images/neck-labels/handwritten-red.png',
+  '手書き 黒文字': '/images/neck-labels/handwritten-black.png',
+};
+
+const PHOTO_OPTIONS_BY_PART = { cap: CAP_IMAGES, bottle: BOTTLE_IMAGES, neck_label: NECK_LABEL_IMAGES };
+
+const neckLabelPhotoEl = document.getElementById('part-neck_label-photo');
+
 const state = {
   product: null,
   parts: [],
   selections: {}, // part.key -> option
   mainLabelText: 'MY LABEL',
-  neckLabelText: '首ラベル',
+  neckLabelText: 'NECK LABEL',
   designName: '',
   steps: [], // built after product loads: [{type:'part', part}, {type:'labels'}, {type:'name'}]
   stepIndex: 0,
@@ -95,7 +122,14 @@ function renderPartStep(part) {
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'swatch';
-    btn.style.background = option.color_hex;
+    const photoMap = PHOTO_OPTIONS_BY_PART[part.key];
+    const photo = photoMap && photoMap[option.label];
+    if (photo) {
+      btn.classList.add('swatch-photo');
+      btn.style.backgroundImage = `url(${photo})`;
+    } else {
+      btn.style.background = option.color_hex;
+    }
     btn.setAttribute('aria-label', `${part.label}: ${option.label}`);
     if (state.selections[part.key]?.id === option.id) {
       btn.classList.add('selected');
@@ -184,12 +218,35 @@ function selectOption(part, option, swatchesEl, btn) {
 function applySelectionsToPreview() {
   Object.entries(state.selections).forEach(([key, option]) => {
     const el = document.getElementById(`part-${key}`);
-    if (el) el.setAttribute('fill', option.color_hex);
+    if (!el) return;
+    const photoMap = PHOTO_OPTIONS_BY_PART[key];
+    const photo = photoMap && photoMap[option.label];
+
+    if (key === 'neck_label') {
+      if (photo) {
+        neckLabelPhotoEl.setAttribute('href', photo);
+        neckLabelPhotoEl.style.display = '';
+        neckLabelTextEl.style.display = 'none';
+      } else {
+        neckLabelPhotoEl.style.display = 'none';
+        neckLabelTextEl.style.display = '';
+        el.setAttribute('fill', option.color_hex);
+      }
+      return;
+    }
+
+    if (photo) {
+      el.setAttribute('href', photo);
+    } else {
+      el.setAttribute('fill', option.color_hex);
+    }
   });
 }
 
 function flashPart(key) {
-  const el = document.getElementById(`part-${key}`);
+  const el = key === 'neck_label' && neckLabelPhotoEl.style.display !== 'none'
+    ? neckLabelPhotoEl
+    : document.getElementById(`part-${key}`);
   if (!el) return;
   el.classList.remove('part-flash');
   void el.offsetWidth;

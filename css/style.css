@@ -145,6 +145,17 @@ body {
   height: 42px;
 }
 
+.swatch-photo {
+  border-radius: 8px;
+  background-size: cover;
+  background-position: center;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12);
+}
+
+.swatch-photo.selected {
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--accent);
+}
+
 .step-body .swatch-label {
   display: block;
   font-size: 11px;

@@ -105,6 +105,8 @@ async function main() {
         { label: 'ゴールド', color_hex: '#d4af37', price_delta: 200 },
         { label: 'ブラック', color_hex: '#141414', price_delta: 200 },
         { label: 'レッド', color_hex: '#8a1f1f', price_delta: 0 },
+        { label: '手書き 赤文字', color_hex: '#f7f1e3', price_delta: 400 },
+        { label: '手書き 黒文字', color_hex: '#f7f1e3', price_delta: 400 },
       ],
     },
   ];
