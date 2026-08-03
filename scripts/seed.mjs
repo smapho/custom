@@ -102,10 +102,8 @@ async function main() {
       label: 'メインラベル',
       display_order: 4,
       options: [
-        { label: 'ホワイト', color_hex: '#ffffff', price_delta: 0 },
-        { label: 'クラフト', color_hex: '#d8c9a3', price_delta: 0 },
-        { label: 'ブラック', color_hex: '#141414', price_delta: 200 },
-        { label: 'ゴールド', color_hex: '#d4af37', price_delta: 300 },
+        { label: '手書き 赤文字', color_hex: '#f7f1e3', price_delta: 400 },
+        { label: '手書き 黒文字', color_hex: '#f7f1e3', price_delta: 400 },
       ],
     },
     {

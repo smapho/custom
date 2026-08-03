@@ -25,9 +25,16 @@ const NECK_LABEL_IMAGES = {
   '手書き 黒文字': '/images/neck-labels/handwritten-black.png',
 };
 
-const PHOTO_OPTIONS_BY_PART = { cap: CAP_IMAGES, bottle: BOTTLE_IMAGES, neck_label: NECK_LABEL_IMAGES };
+const MAIN_LABEL_IMAGES = {
+  '手書き 赤文字': '/images/neck-labels/handwritten-red.png',
+  '手書き 黒文字': '/images/neck-labels/handwritten-black.png',
+};
+
+const PHOTO_OPTIONS_BY_PART = { cap: CAP_IMAGES, bottle: BOTTLE_IMAGES, neck_label: NECK_LABEL_IMAGES, main_label: MAIN_LABEL_IMAGES };
 
 const neckLabelPhotoEl = document.getElementById('part-neck_label-photo');
+const mainLabelPhotoEl = document.getElementById('part-main_label-photo');
+const mainLabelDecorEl = document.getElementById('main-label-decor');
 const bottleSvgEl = document.getElementById('bottle-svg');
 const liquidWrapEl = document.getElementById('liquid-wrap');
 
@@ -241,13 +248,25 @@ function applySelectionsToPreview() {
       return;
     }
 
+    if (key === 'main_label') {
+      if (photo) {
+        mainLabelPhotoEl.setAttribute('href', photo);
+        mainLabelPhotoEl.style.display = '';
+        mainLabelDecorEl.style.display = 'none';
+      } else {
+        mainLabelPhotoEl.style.display = 'none';
+        mainLabelDecorEl.style.display = '';
+        el.setAttribute('fill', option.color_hex);
+        applyLabelContrast(option.color_hex);
+      }
+      return;
+    }
+
     if (photo) {
       el.setAttribute('href', photo);
     } else {
       el.setAttribute('fill', option.color_hex);
     }
-
-    if (key === 'main_label') applyLabelContrast(option.color_hex);
   });
 }
 
