@@ -64,10 +64,10 @@ async function main() {
       label: 'ボトル',
       display_order: 1,
       options: [
+        { label: 'つや消し 青', color_hex: '#7a92a8', price_delta: 100 },
         { label: '光沢 茶色', color_hex: '#4a2c17', price_delta: 0 },
         { label: '光沢 緑', color_hex: '#2f6b3c', price_delta: 0 },
         { label: '光沢 青', color_hex: '#3f6ea5', price_delta: 0 },
-        { label: 'つや消し 青', color_hex: '#7a92a8', price_delta: 100 },
         { label: 'つや消し 白', color_hex: '#eef0f0', price_delta: 100 },
         { label: 'つや消し 黒', color_hex: '#2b2b2b', price_delta: 100 },
         { label: 'つや消し 緑', color_hex: '#5f7a5a', price_delta: 100 },

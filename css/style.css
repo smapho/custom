@@ -94,10 +94,34 @@ body {
 
 #cap-group {
   transform-origin: 160px 47px;
+  opacity: 0;
+}
+
+#cap-group.visible {
+  opacity: 1;
 }
 
 #cap-group.cap-screw-in {
   animation: cap-screw-in 0.6s cubic-bezier(0.3, 0.6, 0.3, 1);
+}
+
+#liquid-wrap {
+  opacity: 0;
+}
+
+#liquid-wrap.visible {
+  opacity: 1;
+}
+
+#neck-label-item,
+#main-label-item {
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+#neck-label-item.visible,
+#main-label-item.visible {
+  opacity: 1;
 }
 
 @keyframes cap-screw-in {

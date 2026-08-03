@@ -67,10 +67,10 @@ async function init() {
     state.product = product;
     state.parts = parts;
 
-    parts.forEach((part) => {
-      const defaultOption = part.part_options[0];
-      if (defaultOption) state.selections[part.key] = defaultOption;
-    });
+    const bottlePart = parts.find((part) => part.key === 'bottle');
+    if (bottlePart?.part_options[0]) {
+      state.selections.bottle = bottlePart.part_options[0];
+    }
 
     state.steps = [
       ...parts.map((part) => ({ type: 'part', part })),
@@ -216,16 +216,28 @@ function renderNameStep() {
   stepBodyEl.append(group);
 }
 
+const REVEAL_EL_IDS = {
+  cap: 'cap-group',
+  content: 'liquid-wrap',
+  main_label: 'main-label-item',
+  neck_label: 'neck-label-item',
+};
+
 function selectOption(part, option, swatchesEl, btn) {
   const changed = state.selections[part.key]?.id !== option.id;
+  const firstReveal = !state.selections[part.key];
   state.selections[part.key] = option;
   [...swatchesEl.querySelectorAll('.swatch')].forEach((el) => el.classList.remove('selected'));
   btn.classList.add('selected');
   applySelectionsToPreview();
   updatePrice();
+
+  const revealId = REVEAL_EL_IDS[part.key];
+  if (revealId) document.getElementById(revealId).classList.add('visible');
+
   if (changed && part.key === 'content') riseLiquid();
   else if (changed && part.key === 'cap') screwInCap();
-  else if (changed) flashPart(part.key);
+  else if (changed && !firstReveal) flashPart(part.key);
 }
 
 function applySelectionsToPreview() {
@@ -305,9 +317,10 @@ function screwInCap() {
 }
 
 function flashPart(key) {
-  const el = key === 'neck_label' && neckLabelPhotoEl.style.display !== 'none'
-    ? neckLabelPhotoEl
-    : document.getElementById(`part-${key}`);
+  let el;
+  if (key === 'neck_label' && neckLabelPhotoEl.style.display !== 'none') el = neckLabelPhotoEl;
+  else if (key === 'main_label' && mainLabelPhotoEl.style.display !== 'none') el = mainLabelPhotoEl;
+  else el = document.getElementById(`part-${key}`);
   if (!el) return;
   el.classList.remove('part-flash');
   void el.offsetWidth;
