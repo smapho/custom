@@ -1,19 +1,26 @@
 import { fetchProductBySlug, saveDesign } from './supabase.js';
 
-const PRODUCT_SLUG = 'original-jersey';
+const PRODUCT_SLUG = 'custom-bottle';
 
 const state = {
   product: null,
   parts: [],
   selections: {}, // part.key -> option
+  mainLabelText: 'MY LABEL',
+  neckLabelText: '首ラベル',
+  designName: '',
+  steps: [], // built after product loads: [{type:'part', part}, {type:'labels'}, {type:'name'}]
+  stepIndex: 0,
 };
 
-const partsContainer = document.getElementById('parts-container');
 const priceValueEl = document.getElementById('price-value');
-const numberInput = document.getElementById('custom-number');
-const numberText = document.getElementById('jersey-number');
-const nameInput = document.getElementById('design-name');
-const saveBtn = document.getElementById('save-btn');
+const mainLabelTextEl = document.getElementById('main-label-text');
+const neckLabelTextEl = document.getElementById('neck-label-text');
+const stepProgressEl = document.getElementById('step-progress');
+const stepTitleEl = document.getElementById('step-title');
+const stepBodyEl = document.getElementById('step-body');
+const prevBtn = document.getElementById('prev-btn');
+const nextBtn = document.getElementById('next-btn');
 const saveResultEl = document.getElementById('save-result');
 
 init();
@@ -29,53 +36,149 @@ async function init() {
       if (defaultOption) state.selections[part.key] = defaultOption;
     });
 
-    renderSidebar();
+    state.steps = [
+      ...parts.map((part) => ({ type: 'part', part })),
+      { type: 'labels' },
+      { type: 'name' },
+    ];
+
     applySelectionsToPreview();
     updatePrice();
+    renderStep();
   } catch (err) {
-    partsContainer.innerHTML = `<p class="loading">読み込みに失敗しました。${escapeHtml(err.message || String(err))}</p>`;
+    stepTitleEl.textContent = '読み込みに失敗しました';
+    stepBodyEl.innerHTML = `<p class="loading">${escapeHtml(err.message || String(err))}</p>`;
     console.error(err);
   }
 }
 
-function renderSidebar() {
-  partsContainer.innerHTML = '';
-  state.parts.forEach((part) => {
-    const group = document.createElement('div');
-    group.className = 'option-group';
+function renderStep() {
+  const step = state.steps[state.stepIndex];
+  renderProgress();
 
-    const heading = document.createElement('h2');
-    heading.textContent = part.label;
-    group.appendChild(heading);
+  if (step.type === 'part') {
+    renderPartStep(step.part);
+  } else if (step.type === 'labels') {
+    renderLabelsStep();
+  } else if (step.type === 'name') {
+    renderNameStep();
+  }
 
-    const swatches = document.createElement('div');
-    swatches.className = 'swatches';
+  prevBtn.disabled = state.stepIndex === 0;
+  const isLast = state.stepIndex === state.steps.length - 1;
+  nextBtn.textContent = isLast ? 'このデザインを保存する' : '次へ';
+}
 
-    part.part_options.forEach((option) => {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'swatch';
-      btn.style.background = option.color_hex;
-      btn.title = option.label;
-      btn.setAttribute('aria-label', `${part.label}: ${option.label}`);
-      if (state.selections[part.key]?.id === option.id) {
-        btn.classList.add('selected');
-      }
-      btn.addEventListener('click', () => selectOption(part, option, swatches, btn));
-      swatches.appendChild(btn);
-    });
-
-    group.appendChild(swatches);
-    partsContainer.appendChild(group);
+function renderProgress() {
+  stepProgressEl.innerHTML = '';
+  state.steps.forEach((_, i) => {
+    const dot = document.createElement('span');
+    dot.className = 'step-dot';
+    if (i < state.stepIndex) dot.classList.add('done');
+    if (i === state.stepIndex) dot.classList.add('active');
+    stepProgressEl.appendChild(dot);
   });
 }
 
+function renderPartStep(part) {
+  const stepNum = state.stepIndex + 1;
+  stepTitleEl.textContent = `${stepNum}. ${part.label}をお選びください`;
+  stepBodyEl.innerHTML = '';
+
+  const swatches = document.createElement('div');
+  swatches.className = 'swatches';
+
+  part.part_options.forEach((option) => {
+    const cell = document.createElement('div');
+    cell.className = 'swatch-cell';
+
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'swatch';
+    btn.style.background = option.color_hex;
+    btn.setAttribute('aria-label', `${part.label}: ${option.label}`);
+    if (state.selections[part.key]?.id === option.id) {
+      btn.classList.add('selected');
+    }
+    btn.addEventListener('click', () => selectOption(part, option, swatches, btn));
+
+    const label = document.createElement('span');
+    label.className = 'swatch-label';
+    label.textContent = option.label;
+
+    cell.appendChild(btn);
+    cell.appendChild(label);
+    swatches.appendChild(cell);
+  });
+
+  stepBodyEl.appendChild(swatches);
+}
+
+function renderLabelsStep() {
+  const stepNum = state.stepIndex + 1;
+  stepTitleEl.textContent = `${stepNum}. ラベルの文字を入力してください`;
+  stepBodyEl.innerHTML = '';
+
+  const group1 = document.createElement('div');
+  group1.className = 'option-group';
+  const h1 = document.createElement('h2');
+  h1.textContent = 'メインラベルの文字';
+  const input1 = document.createElement('input');
+  input1.type = 'text';
+  input1.maxLength = 10;
+  input1.value = state.mainLabelText;
+  input1.addEventListener('input', () => {
+    state.mainLabelText = input1.value;
+    mainLabelTextEl.textContent = input1.value;
+  });
+  group1.append(h1, input1);
+
+  const group2 = document.createElement('div');
+  group2.className = 'option-group';
+  const h2 = document.createElement('h2');
+  h2.textContent = '首ラベルの文字';
+  const input2 = document.createElement('input');
+  input2.type = 'text';
+  input2.maxLength = 8;
+  input2.value = state.neckLabelText;
+  input2.addEventListener('input', () => {
+    state.neckLabelText = input2.value;
+    neckLabelTextEl.textContent = input2.value;
+  });
+  group2.append(h2, input2);
+
+  stepBodyEl.append(group1, group2);
+}
+
+function renderNameStep() {
+  const stepNum = state.stepIndex + 1;
+  stepTitleEl.textContent = `${stepNum}. デザイン名を付けて保存`;
+  stepBodyEl.innerHTML = '';
+
+  const group = document.createElement('div');
+  group.className = 'option-group';
+  const h2 = document.createElement('h2');
+  h2.textContent = 'デザイン名（任意）';
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.maxLength = 40;
+  input.placeholder = '例）父の日ギフト用';
+  input.value = state.designName;
+  input.addEventListener('input', () => {
+    state.designName = input.value;
+  });
+  group.append(h2, input);
+  stepBodyEl.append(group);
+}
+
 function selectOption(part, option, swatchesEl, btn) {
+  const changed = state.selections[part.key]?.id !== option.id;
   state.selections[part.key] = option;
-  [...swatchesEl.children].forEach((el) => el.classList.remove('selected'));
+  [...swatchesEl.querySelectorAll('.swatch')].forEach((el) => el.classList.remove('selected'));
   btn.classList.add('selected');
   applySelectionsToPreview();
   updatePrice();
+  if (changed) flashPart(part.key);
 }
 
 function applySelectionsToPreview() {
@@ -85,21 +188,40 @@ function applySelectionsToPreview() {
   });
 }
 
+function flashPart(key) {
+  const el = document.getElementById(`part-${key}`);
+  if (!el) return;
+  el.classList.remove('part-flash');
+  void el.offsetWidth;
+  el.classList.add('part-flash');
+  el.addEventListener('animationend', () => el.classList.remove('part-flash'), { once: true });
+}
+
 function updatePrice() {
   const base = state.product?.base_price || 0;
   const extra = Object.values(state.selections).reduce((sum, opt) => sum + (opt.price_delta || 0), 0);
   priceValueEl.textContent = `¥${(base + extra).toLocaleString('ja-JP')}`;
 }
 
-numberInput.addEventListener('input', () => {
-  const digitsOnly = numberInput.value.replace(/[^0-9]/g, '').slice(0, 2);
-  numberInput.value = digitsOnly;
-  numberText.textContent = digitsOnly || '';
+prevBtn.addEventListener('click', () => {
+  if (state.stepIndex === 0) return;
+  state.stepIndex -= 1;
+  renderStep();
 });
 
-saveBtn.addEventListener('click', async () => {
+nextBtn.addEventListener('click', () => {
+  const isLast = state.stepIndex === state.steps.length - 1;
+  if (!isLast) {
+    state.stepIndex += 1;
+    renderStep();
+    return;
+  }
+  handleSave();
+});
+
+async function handleSave() {
   if (!state.product) return;
-  saveBtn.disabled = true;
+  nextBtn.disabled = true;
   saveResultEl.textContent = '';
   saveResultEl.className = 'save-result';
 
@@ -107,13 +229,14 @@ saveBtn.addEventListener('click', async () => {
   Object.entries(state.selections).forEach(([key, option]) => {
     selectionIds[key] = option.id;
   });
+  selectionIds.mainLabelText = state.mainLabelText;
+  selectionIds.neckLabelText = state.neckLabelText;
 
   try {
     const design = await saveDesign({
       productId: state.product.id,
-      name: nameInput.value.trim(),
+      name: state.designName.trim(),
       selections: selectionIds,
-      customText: numberInput.value,
     });
     saveResultEl.textContent = `保存しました！ デザインID: ${design.id}`;
     saveResultEl.className = 'save-result success';
@@ -122,9 +245,9 @@ saveBtn.addEventListener('click', async () => {
     saveResultEl.className = 'save-result error';
     console.error(err);
   } finally {
-    saveBtn.disabled = false;
+    nextBtn.disabled = false;
   }
-});
+}
 
 function escapeHtml(str) {
   const div = document.createElement('div');

@@ -36,7 +36,7 @@ export async function fetchProductBySlug(slug) {
   return { product, parts };
 }
 
-export async function saveDesign({ productId, name, selections, customText }) {
+export async function saveDesign({ productId, name, selections }) {
   const supabase = await getClient();
   const { data, error } = await supabase
     .from('custom_designs')
@@ -44,7 +44,6 @@ export async function saveDesign({ productId, name, selections, customText }) {
       product_id: productId,
       name: name || null,
       selections,
-      custom_text: customText || null,
     })
     .select()
     .single();

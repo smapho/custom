@@ -57,17 +57,27 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 420px;
+  min-height: 560px;
 }
 
-#jersey-svg {
+#bottle-svg {
   width: 100%;
-  max-width: 360px;
-  filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.12));
+  max-width: 300px;
 }
 
-#part-body, #part-sleeve, #part-collar, #part-sideline {
+#part-bottle, #part-cap, #part-main_label, #part-neck_label {
   transition: fill 0.15s ease;
+}
+
+@keyframes part-flash {
+  0%, 100% { filter: none; }
+  25% { filter: brightness(1.6) saturate(1.4) drop-shadow(0 0 10px rgba(255,255,255,0.9)); }
+  50% { filter: brightness(0.85); }
+  75% { filter: brightness(1.6) saturate(1.4) drop-shadow(0 0 10px rgba(255,255,255,0.9)); }
+}
+
+.part-flash {
+  animation: part-flash 0.55s ease-in-out 2;
 }
 
 .price-box {
@@ -99,10 +109,86 @@ body {
   gap: 22px;
 }
 
-.parts-container {
+.step-progress {
+  display: flex;
+  gap: 6px;
+}
+
+.step-dot {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--border);
+}
+
+.step-dot.done { background: var(--accent); }
+.step-dot.active { background: var(--accent); opacity: 0.55; }
+
+.step-panel {
+  min-height: 220px;
+}
+
+.step-title {
+  font-size: 15px;
+  margin: 0 0 14px;
+  padding-left: 10px;
+  border-left: 4px solid var(--accent);
+  color: var(--text);
+}
+
+.step-body .swatches {
+  gap: 12px;
+}
+
+.step-body .swatch {
+  width: 42px;
+  height: 42px;
+}
+
+.step-body .swatch-label {
+  display: block;
+  font-size: 11px;
+  text-align: center;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.swatch-cell {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  align-items: center;
+  width: 60px;
+}
+
+.step-nav {
+  display: flex;
+  gap: 10px;
+}
+
+.nav-btn {
+  flex: 1;
+  padding: 13px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+}
+
+.nav-btn-secondary {
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.nav-btn-primary {
+  background: var(--accent);
+  color: #fff;
+}
+
+.nav-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 .option-group h2 {
