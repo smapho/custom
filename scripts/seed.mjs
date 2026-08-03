@@ -72,9 +72,21 @@ async function main() {
       ],
     },
     {
+      key: 'content',
+      label: '中身（焼酎の種類）',
+      display_order: 2,
+      options: [
+        { label: '芋焼酎', color_hex: '#caa15c', price_delta: 0 },
+        { label: '麦焼酎', color_hex: '#e8d9a0', price_delta: 0 },
+        { label: '米焼酎', color_hex: '#f0ecdf', price_delta: 0 },
+        { label: '黒糖焼酎', color_hex: '#b8863f', price_delta: 200 },
+        { label: '古酒（長期熟成）', color_hex: '#8a5a28', price_delta: 500 },
+      ],
+    },
+    {
       key: 'bottle',
       label: 'ボトル',
-      display_order: 2,
+      display_order: 3,
       options: [
         { label: '光沢 茶色', color_hex: '#4a2c17', price_delta: 0 },
         { label: '光沢 緑', color_hex: '#2f6b3c', price_delta: 0 },
@@ -88,7 +100,7 @@ async function main() {
     {
       key: 'main_label',
       label: 'メインラベル',
-      display_order: 3,
+      display_order: 4,
       options: [
         { label: 'ホワイト', color_hex: '#ffffff', price_delta: 0 },
         { label: 'クラフト', color_hex: '#d8c9a3', price_delta: 0 },
@@ -99,7 +111,7 @@ async function main() {
     {
       key: 'neck_label',
       label: '首ラベル',
-      display_order: 4,
+      display_order: 5,
       options: [
         { label: 'ホワイト', color_hex: '#ffffff', price_delta: 0 },
         { label: 'ゴールド', color_hex: '#d4af37', price_delta: 200 },

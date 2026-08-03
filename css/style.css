@@ -57,12 +57,86 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 560px;
+  min-height: 300px;
+  border-radius: 10px;
+  background: radial-gradient(ellipse at 50% 35%, #7a94b8 0%, #46577a 55%, #262f42 100%);
+  overflow: hidden;
 }
 
 #bottle-svg {
   width: 100%;
-  max-width: 300px;
+  max-width: 150px;
+  -webkit-box-reflect: below 2px linear-gradient(to bottom, transparent, transparent 55%, rgba(255,255,255,0.22));
+  overflow: visible;
+}
+
+#bottle-spin-group {
+  opacity: 0;
+  transform: translateX(-160px);
+  transform-origin: 160px 400px;
+}
+
+#cap-group {
+  opacity: 0;
+  transform: translateY(-260px);
+}
+
+#labels-group {
+  opacity: 0;
+  transform: scale(0.6);
+  transform-origin: 160px 470px;
+}
+
+#bottle-svg.enter #bottle-spin-group {
+  animation:
+    bottle-slide-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards,
+    bottle-spin 0.5s ease-in-out 0.7s forwards;
+}
+
+#bottle-svg.enter #cap-group {
+  animation: cap-drop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 1.2s forwards;
+}
+
+#bottle-svg.enter #labels-group {
+  animation: label-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 1.65s forwards;
+}
+
+@keyframes bottle-slide-in {
+  0% { opacity: 0; transform: translateX(-160px); }
+  60% { opacity: 1; }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes bottle-spin {
+  0% { transform: translateX(0) scaleX(1); }
+  50% { transform: translateX(0) scaleX(0.04); }
+  100% { transform: translateX(0) scaleX(1); }
+}
+
+@keyframes cap-drop {
+  0% { opacity: 0; transform: translateY(-260px); }
+  60% { opacity: 1; }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes label-pop {
+  0% { opacity: 0; transform: scale(0.6); }
+  70% { opacity: 1; transform: scale(1.08); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+#liquid-wrap {
+  transform-origin: 160px 600px;
+  transform: scaleY(0);
+}
+
+#liquid-wrap.liquid-rise {
+  animation: liquid-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes liquid-rise {
+  0% { transform: scaleY(0); }
+  100% { transform: scaleY(1); }
 }
 
 #part-bottle, #part-cap, #part-main_label, #part-neck_label {

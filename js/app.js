@@ -28,6 +28,8 @@ const NECK_LABEL_IMAGES = {
 const PHOTO_OPTIONS_BY_PART = { cap: CAP_IMAGES, bottle: BOTTLE_IMAGES, neck_label: NECK_LABEL_IMAGES };
 
 const neckLabelPhotoEl = document.getElementById('part-neck_label-photo');
+const bottleSvgEl = document.getElementById('bottle-svg');
+const liquidWrapEl = document.getElementById('liquid-wrap');
 
 const state = {
   product: null,
@@ -72,6 +74,8 @@ async function init() {
     applySelectionsToPreview();
     updatePrice();
     renderStep();
+    requestAnimationFrame(() => bottleSvgEl.classList.add('enter'));
+    setTimeout(riseLiquid, 2200);
   } catch (err) {
     stepTitleEl.textContent = '読み込みに失敗しました';
     stepBodyEl.innerHTML = `<p class="loading">${escapeHtml(err.message || String(err))}</p>`;
@@ -212,7 +216,8 @@ function selectOption(part, option, swatchesEl, btn) {
   btn.classList.add('selected');
   applySelectionsToPreview();
   updatePrice();
-  if (changed) flashPart(part.key);
+  if (changed && part.key === 'content') riseLiquid();
+  else if (changed) flashPart(part.key);
 }
 
 function applySelectionsToPreview() {
@@ -241,6 +246,12 @@ function applySelectionsToPreview() {
       el.setAttribute('fill', option.color_hex);
     }
   });
+}
+
+function riseLiquid() {
+  liquidWrapEl.classList.remove('liquid-rise');
+  void liquidWrapEl.offsetWidth;
+  liquidWrapEl.classList.add('liquid-rise');
 }
 
 function flashPart(key) {

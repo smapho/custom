@@ -41,88 +41,64 @@
           <clipPath id="neckLabelClip">
             <rect x="-88" y="-20" width="176" height="40" rx="3" />
           </clipPath>
-          <clipPath id="bottleClip">
-            <path d="M128,76 L192,76 L192,160
-                     C192,160 232,190 246,230
-                     C258,265 258,290 258,320
-                     L258,600
-                     C258,652 234,690 198,706
-                     C183,713 172,716 160,716
-                     C148,716 137,713 122,706
-                     C86,690 62,652 62,600
-                     L62,320
-                     C62,290 62,265 74,230
-                     C88,190 128,160 128,160
-                     Z" />
+          <clipPath id="liquidClip">
+            <rect x="92" y="270" width="136" height="330" rx="18" />
           </clipPath>
         </defs>
 
-        <!-- ground shadow -->
-        <ellipse cx="160" cy="716" rx="68" ry="13" fill="#000000" opacity="0.28" filter="url(#baseShadow)" />
-
-        <!-- bottle glass body (incl. neck + shoulder) -->
-        <rect x="60" y="74" width="200" height="652" fill="#e5e5e5" clip-path="url(#bottleClip)" />
-        <image id="part-bottle" data-part="bottle"
-          x="40" y="74" width="240" height="652"
-          preserveAspectRatio="xMidYMid slice"
-          clip-path="url(#bottleClip)"
-          href="/images/bottles/brown_g.jpg" />
-        <path d="M128,76 L192,76 L192,160
-             C192,160 232,190 246,230
-             C258,265 258,290 258,320
-             L258,600
-             C258,652 234,690 198,706
-             C183,713 172,716 160,716
-             C148,716 137,713 122,706
-             C86,690 62,652 62,600
-             L62,320
-             C62,290 62,265 74,230
-             C88,190 128,160 128,160
-             Z"
-          fill="none" stroke="#00000030" stroke-width="2" />
-
-        <!-- glass gloss highlight (decorative, not user-editable) -->
-        <path d="M96,260 C87,340 87,540 97,652 C102,657 111,654 109,647
-                 C100,540 100,340 108,264 C110,256 99,253 96,260 Z"
-          fill="#ffffff" opacity="0.16" />
-        <path d="M215,230 C222,260 224,320 222,360 C221,364 216,363 216,359
-                 C217,320 215,262 209,234 C208,229 214,225 215,230 Z"
-          fill="#ffffff" opacity="0.10" />
-
-        <!-- neck label (diagonal band) -->
-        <g transform="translate(160,205) rotate(-28)">
-          <rect id="part-neck_label" data-part="neck_label"
-            x="-88" y="-20" width="176" height="40" rx="3"
-            fill="#ffffff" stroke="#00000018" stroke-width="1" filter="url(#softShadow)" />
-          <image id="part-neck_label-photo"
-            x="-88" y="-20" width="176" height="40"
+        <!-- bottle: slides in from the side, then spins once -->
+        <g id="bottle-spin-group">
+          <ellipse cx="160" cy="636" rx="60" ry="12" fill="#000000" opacity="0.25" filter="url(#baseShadow)" />
+          <image id="part-bottle" data-part="bottle"
+            x="59" y="76" width="202" height="560"
             preserveAspectRatio="xMidYMid meet"
-            style="display:none" />
-          <text id="neck-label-text" x="0" y="6" text-anchor="middle"
-            font-family="'Shippori Mincho', 'Hiragino Sans', sans-serif" font-weight="800" font-size="17"
-            letter-spacing="3" fill="#1c1c1c">NECK LABEL</text>
+            href="/images/bottles/brown_g.jpg" />
+
+          <!-- liquid content: rises from the bottom when a 焼酎 type is chosen -->
+          <g id="liquid-wrap" clip-path="url(#liquidClip)">
+            <rect id="part-content" data-part="content"
+              x="92" y="270" width="136" height="330"
+              fill="#caa15c" opacity="0.4" style="mix-blend-mode:multiply" />
+          </g>
         </g>
 
-        <!-- main label -->
-        <g>
-          <rect id="part-main_label" data-part="main_label"
-            x="88" y="440" width="144" height="164" rx="4"
-            fill="#ffffff" stroke="#00000018" stroke-width="1" filter="url(#softShadow)" />
-          <rect x="88" y="440" width="144" height="6" fill="#1c1c1c" opacity="0.9" />
-          <circle cx="160" cy="470" r="10" fill="none" stroke="#1c1c1c" stroke-width="1.4" opacity="0.85" />
-          <circle cx="160" cy="470" r="3" fill="#1c1c1c" opacity="0.85" />
-          <text id="main-label-text" x="160" y="516" text-anchor="middle"
-            font-family="'Shippori Mincho', 'Hiragino Mincho ProN', serif" font-weight="800" font-size="26"
-            letter-spacing="1" fill="#1c1c1c">MY LABEL</text>
-          <line x1="118" y1="534" x2="202" y2="534" stroke="#1c1c1c" stroke-width="1" opacity="0.35" />
-          <text x="160" y="556" text-anchor="middle"
-            font-family="'Helvetica Neue', Arial, sans-serif" font-weight="600" font-size="10"
-            letter-spacing="4" fill="#1c1c1c" opacity="0.55">ORIGINAL BLEND</text>
-          <rect x="88" y="598" width="144" height="6" fill="#1c1c1c" opacity="0.9" />
+        <!-- labels: fade + pop in after the bottle finishes spinning -->
+        <g id="labels-group">
+          <!-- neck label (diagonal band) -->
+          <g transform="translate(160,205) rotate(-28)">
+            <rect id="part-neck_label" data-part="neck_label"
+              x="-88" y="-20" width="176" height="40" rx="3"
+              fill="#ffffff" stroke="#00000018" stroke-width="1" filter="url(#softShadow)" />
+            <image id="part-neck_label-photo"
+              x="-88" y="-20" width="176" height="40"
+              preserveAspectRatio="xMidYMid meet"
+              style="display:none" />
+            <text id="neck-label-text" x="0" y="6" text-anchor="middle"
+              font-family="'Shippori Mincho', 'Hiragino Sans', sans-serif" font-weight="800" font-size="17"
+              letter-spacing="3" fill="#1c1c1c">NECK LABEL</text>
+          </g>
+
+          <!-- main label -->
+          <g>
+            <rect id="part-main_label" data-part="main_label"
+              x="88" y="440" width="144" height="164" rx="4"
+              fill="#ffffff" stroke="#00000018" stroke-width="1" filter="url(#softShadow)" />
+            <rect x="88" y="440" width="144" height="6" fill="#1c1c1c" opacity="0.9" />
+            <circle cx="160" cy="470" r="10" fill="none" stroke="#1c1c1c" stroke-width="1.4" opacity="0.85" />
+            <circle cx="160" cy="470" r="3" fill="#1c1c1c" opacity="0.85" />
+            <text id="main-label-text" x="160" y="516" text-anchor="middle"
+              font-family="'Shippori Mincho', 'Hiragino Mincho ProN', serif" font-weight="800" font-size="26"
+              letter-spacing="1" fill="#1c1c1c">MY LABEL</text>
+            <line x1="118" y1="534" x2="202" y2="534" stroke="#1c1c1c" stroke-width="1" opacity="0.35" />
+            <text x="160" y="556" text-anchor="middle"
+              font-family="'Helvetica Neue', Arial, sans-serif" font-weight="600" font-size="10"
+              letter-spacing="4" fill="#1c1c1c" opacity="0.55">ORIGINAL BLEND</text>
+            <rect x="88" y="598" width="144" height="6" fill="#1c1c1c" opacity="0.9" />
+          </g>
         </g>
 
-        <!-- cap -->
-        <g>
+        <!-- cap: drops in from above -->
+        <g id="cap-group">
           <rect x="120" y="16" width="80" height="62" rx="10" fill="#e5e5e5" />
           <image id="part-cap" data-part="cap"
             x="120" y="16" width="80" height="62"
