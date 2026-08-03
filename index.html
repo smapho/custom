@@ -35,6 +35,9 @@
             <feColorMatrix in="noise" type="matrix"
               values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.35 0" />
           </filter>
+          <filter id="softEdge" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="10" />
+          </filter>
           <clipPath id="capClip">
             <rect x="120" y="16" width="80" height="62" rx="10" />
           </clipPath>
@@ -49,7 +52,7 @@
         <!-- bottle: slides in from the side, then spins once -->
         <g id="bottle-spin-group">
           <ellipse cx="160" cy="636" rx="60" ry="12" fill="#000000" opacity="0.25" filter="url(#baseShadow)" />
-          <image id="part-bottle" data-part="bottle"
+          <image id="part-bottle" data-part="bottle" class="photo-blend"
             x="59" y="76" width="202" height="560"
             preserveAspectRatio="xMidYMid meet"
             href="/images/bottles/brown_g.jpg" />
@@ -58,7 +61,7 @@
           <g id="liquid-wrap" clip-path="url(#liquidClip)">
             <rect id="part-content" data-part="content"
               x="92" y="270" width="136" height="330"
-              fill="#caa15c" opacity="0.4" style="mix-blend-mode:multiply" />
+              fill="#caa15c" opacity="0.3" class="liquid-blend" filter="url(#softEdge)" />
           </g>
         </g>
 
@@ -83,24 +86,24 @@
             <rect id="part-main_label" data-part="main_label"
               x="88" y="440" width="144" height="164" rx="4"
               fill="#ffffff" stroke="#00000018" stroke-width="1" filter="url(#softShadow)" />
-            <rect x="88" y="440" width="144" height="6" fill="#1c1c1c" opacity="0.9" />
-            <circle cx="160" cy="470" r="10" fill="none" stroke="#1c1c1c" stroke-width="1.4" opacity="0.85" />
-            <circle cx="160" cy="470" r="3" fill="#1c1c1c" opacity="0.85" />
+            <rect id="label-bar-top" x="88" y="440" width="144" height="6" fill="#1c1c1c" opacity="0.9" />
+            <circle id="label-ring" cx="160" cy="470" r="10" fill="none" stroke="#1c1c1c" stroke-width="1.4" opacity="0.85" />
+            <circle id="label-dot" cx="160" cy="470" r="3" fill="#1c1c1c" opacity="0.85" />
             <text id="main-label-text" x="160" y="516" text-anchor="middle"
               font-family="'Shippori Mincho', 'Hiragino Mincho ProN', serif" font-weight="800" font-size="26"
               letter-spacing="1" fill="#1c1c1c">MY LABEL</text>
-            <line x1="118" y1="534" x2="202" y2="534" stroke="#1c1c1c" stroke-width="1" opacity="0.35" />
-            <text x="160" y="556" text-anchor="middle"
+            <line id="label-divider" x1="118" y1="534" x2="202" y2="534" stroke="#1c1c1c" stroke-width="1" opacity="0.35" />
+            <text id="label-subtext" x="160" y="556" text-anchor="middle"
               font-family="'Helvetica Neue', Arial, sans-serif" font-weight="600" font-size="10"
               letter-spacing="4" fill="#1c1c1c" opacity="0.55">ORIGINAL BLEND</text>
-            <rect x="88" y="598" width="144" height="6" fill="#1c1c1c" opacity="0.9" />
+            <rect id="label-bar-bottom" x="88" y="598" width="144" height="6" fill="#1c1c1c" opacity="0.9" />
           </g>
         </g>
 
         <!-- cap: drops in from above -->
         <g id="cap-group">
           <rect x="120" y="16" width="80" height="62" rx="10" fill="#e5e5e5" />
-          <image id="part-cap" data-part="cap"
+          <image id="part-cap" data-part="cap" class="photo-blend"
             x="120" y="16" width="80" height="62"
             preserveAspectRatio="xMidYMid slice"
             clip-path="url(#capClip)"

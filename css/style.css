@@ -81,6 +81,14 @@ body {
   transform: translateY(-260px);
 }
 
+.photo-blend {
+  mix-blend-mode: multiply;
+}
+
+.liquid-blend {
+  mix-blend-mode: multiply;
+}
+
 #labels-group {
   opacity: 0;
   transform: scale(0.6);
@@ -220,7 +228,9 @@ body {
 }
 
 .swatch-photo {
-  border-radius: 8px;
+  width: 120px !important;
+  height: 120px !important;
+  border-radius: 10px;
   background-size: cover;
   background-position: center;
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12);
@@ -243,6 +253,10 @@ body {
   flex-direction: column;
   align-items: center;
   width: 60px;
+}
+
+.swatch-cell:has(.swatch-photo) {
+  width: 120px;
 }
 
 .step-nav {

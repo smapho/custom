@@ -245,6 +245,28 @@ function applySelectionsToPreview() {
     } else {
       el.setAttribute('fill', option.color_hex);
     }
+
+    if (key === 'main_label') applyLabelContrast(option.color_hex);
+  });
+}
+
+const LABEL_CONTRAST_IDS = ['label-bar-top', 'label-bar-bottom', 'label-ring', 'label-dot', 'main-label-text', 'label-divider', 'label-subtext'];
+
+function applyLabelContrast(bgHex) {
+  const r = parseInt(bgHex.slice(1, 3), 16);
+  const g = parseInt(bgHex.slice(3, 5), 16);
+  const b = parseInt(bgHex.slice(5, 7), 16);
+  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  const inkColor = luminance < 0.45 ? '#f7f1e3' : '#1c1c1c';
+
+  LABEL_CONTRAST_IDS.forEach((id) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (el.tagName === 'circle' && el.getAttribute('fill') === 'none') {
+      el.setAttribute('stroke', inkColor);
+    } else {
+      el.setAttribute(el.tagName === 'line' ? 'stroke' : 'fill', inkColor);
+    }
   });
 }
 
