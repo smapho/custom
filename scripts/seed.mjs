@@ -102,8 +102,8 @@ async function main() {
       label: 'メインラベル',
       display_order: 4,
       options: [
-        { label: '手書き 赤文字', color_hex: '#f7f1e3', price_delta: 400 },
-        { label: '手書き 黒文字', color_hex: '#f7f1e3', price_delta: 400 },
+        { label: '写真ラベル（結婚式）', color_hex: '#e8ecef', price_delta: 400 },
+        { label: '手書きラベル（お父さんへ）', color_hex: '#f7f1e3', price_delta: 400 },
       ],
     },
     {

@@ -78,12 +78,6 @@ body {
 #bottle-spin-group {
   opacity: 0;
   transform: translateX(-160px);
-  transform-origin: 160px 400px;
-}
-
-#cap-group {
-  opacity: 0;
-  transform: translateY(-260px);
 }
 
 .photo-blend {
@@ -94,24 +88,22 @@ body {
   mix-blend-mode: multiply;
 }
 
-#labels-group {
-  opacity: 0;
-  transform: scale(0.6);
-  transform-origin: 160px 470px;
-}
-
 #bottle-svg.enter #bottle-spin-group {
-  animation:
-    bottle-slide-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards,
-    bottle-spin 0.5s ease-in-out 0.7s forwards;
+  animation: bottle-slide-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
-#bottle-svg.enter #cap-group {
-  animation: cap-drop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 1.2s forwards;
+#cap-group {
+  transform-origin: 160px 47px;
 }
 
-#bottle-svg.enter #labels-group {
-  animation: label-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 1.65s forwards;
+#cap-group.cap-screw-in {
+  animation: cap-screw-in 0.6s cubic-bezier(0.3, 0.6, 0.3, 1);
+}
+
+@keyframes cap-screw-in {
+  0% { transform: translateY(-140px) rotate(-260deg); opacity: 0.4; }
+  70% { opacity: 1; }
+  100% { transform: translateY(0) rotate(0deg); opacity: 1; }
 }
 
 @keyframes bottle-slide-in {
@@ -120,35 +112,16 @@ body {
   100% { opacity: 1; transform: translateX(0); }
 }
 
-@keyframes bottle-spin {
-  0% { transform: translateX(0) scaleX(1); }
-  50% { transform: translateX(0) scaleX(0.04); }
-  100% { transform: translateX(0) scaleX(1); }
-}
-
-@keyframes cap-drop {
-  0% { opacity: 0; transform: translateY(-260px); }
-  60% { opacity: 1; }
-  100% { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes label-pop {
-  0% { opacity: 0; transform: scale(0.6); }
-  70% { opacity: 1; transform: scale(1.08); }
-  100% { opacity: 1; transform: scale(1); }
-}
-
 #liquid-wrap {
   transform-origin: 160px 590px;
-  transform: scaleY(0);
 }
 
 #liquid-wrap.liquid-rise {
-  animation: liquid-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: liquid-rise 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @keyframes liquid-rise {
-  0% { transform: scaleY(0); }
+  0% { transform: scaleY(0.7); }
   100% { transform: scaleY(1); }
 }
 

@@ -26,8 +26,8 @@ const NECK_LABEL_IMAGES = {
 };
 
 const MAIN_LABEL_IMAGES = {
-  '手書き 赤文字': '/images/neck-labels/handwritten-red.png',
-  '手書き 黒文字': '/images/neck-labels/handwritten-black.png',
+  '写真ラベル（結婚式）': '/images/main-labels/wedding.jpg',
+  '手書きラベル（お父さんへ）': '/images/main-labels/handwritten-father.jpg',
 };
 
 const PHOTO_OPTIONS_BY_PART = { cap: CAP_IMAGES, bottle: BOTTLE_IMAGES, neck_label: NECK_LABEL_IMAGES, main_label: MAIN_LABEL_IMAGES };
@@ -82,7 +82,6 @@ async function init() {
     updatePrice();
     renderStep();
     requestAnimationFrame(() => bottleSvgEl.classList.add('enter'));
-    setTimeout(riseLiquid, 2200);
   } catch (err) {
     stepTitleEl.textContent = '読み込みに失敗しました';
     stepBodyEl.innerHTML = `<p class="loading">${escapeHtml(err.message || String(err))}</p>`;
@@ -225,6 +224,7 @@ function selectOption(part, option, swatchesEl, btn) {
   applySelectionsToPreview();
   updatePrice();
   if (changed && part.key === 'content') riseLiquid();
+  else if (changed && part.key === 'cap') screwInCap();
   else if (changed) flashPart(part.key);
 }
 
@@ -294,6 +294,14 @@ function riseLiquid() {
   liquidWrapEl.classList.remove('liquid-rise');
   void liquidWrapEl.offsetWidth;
   liquidWrapEl.classList.add('liquid-rise');
+}
+
+const capGroupEl = document.getElementById('cap-group');
+
+function screwInCap() {
+  capGroupEl.classList.remove('cap-screw-in');
+  void capGroupEl.offsetWidth;
+  capGroupEl.classList.add('cap-screw-in');
 }
 
 function flashPart(key) {
