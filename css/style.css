@@ -42,6 +42,11 @@ body {
   margin: 12px auto 60px;
   padding: 0 20px;
   align-items: start;
+  min-width: 0;
+}
+
+.builder > * {
+  min-width: 0;
 }
 
 .preview-pane {
@@ -189,6 +194,12 @@ body {
   display: flex;
   flex-direction: column;
   gap: 22px;
+  min-width: 0;
+}
+
+.step-panel,
+.step-body {
+  min-width: 0;
 }
 
 .step-progress {
@@ -222,14 +233,21 @@ body {
   gap: 12px;
 }
 
+.step-body .swatches.swatches-photo {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  -webkit-overflow-scrolling: touch;
+}
+
 .step-body .swatch {
   width: 42px;
   height: 42px;
 }
 
 .swatch-photo {
-  width: 120px !important;
-  height: 120px !important;
+  width: 84px !important;
+  height: 84px !important;
   border-radius: 10px;
   background-size: cover;
   background-position: center;
@@ -253,10 +271,11 @@ body {
   flex-direction: column;
   align-items: center;
   width: 60px;
+  flex-shrink: 0;
 }
 
 .swatch-cell:has(.swatch-photo) {
-  width: 120px;
+  width: 84px;
 }
 
 .step-nav {

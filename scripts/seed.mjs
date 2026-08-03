@@ -60,9 +60,23 @@ async function main() {
 
   const partsSpec = [
     {
+      key: 'bottle',
+      label: 'ボトル',
+      display_order: 1,
+      options: [
+        { label: '光沢 茶色', color_hex: '#4a2c17', price_delta: 0 },
+        { label: '光沢 緑', color_hex: '#2f6b3c', price_delta: 0 },
+        { label: '光沢 青', color_hex: '#3f6ea5', price_delta: 0 },
+        { label: 'つや消し 青', color_hex: '#7a92a8', price_delta: 100 },
+        { label: 'つや消し 白', color_hex: '#eef0f0', price_delta: 100 },
+        { label: 'つや消し 黒', color_hex: '#2b2b2b', price_delta: 100 },
+        { label: 'つや消し 緑', color_hex: '#5f7a5a', price_delta: 100 },
+      ],
+    },
+    {
       key: 'cap',
       label: 'キャップ',
-      display_order: 1,
+      display_order: 2,
       options: [
         { label: '黒', color_hex: '#1c1c1c', price_delta: 0 },
         { label: '金', color_hex: '#caa14a', price_delta: 100 },
@@ -74,27 +88,13 @@ async function main() {
     {
       key: 'content',
       label: '中身（焼酎の種類）',
-      display_order: 2,
+      display_order: 3,
       options: [
         { label: '芋焼酎', color_hex: '#caa15c', price_delta: 0 },
         { label: '麦焼酎', color_hex: '#e8d9a0', price_delta: 0 },
         { label: '米焼酎', color_hex: '#f0ecdf', price_delta: 0 },
         { label: '黒糖焼酎', color_hex: '#b8863f', price_delta: 200 },
         { label: '古酒（長期熟成）', color_hex: '#8a5a28', price_delta: 500 },
-      ],
-    },
-    {
-      key: 'bottle',
-      label: 'ボトル',
-      display_order: 3,
-      options: [
-        { label: '光沢 茶色', color_hex: '#4a2c17', price_delta: 0 },
-        { label: '光沢 緑', color_hex: '#2f6b3c', price_delta: 0 },
-        { label: '光沢 青', color_hex: '#3f6ea5', price_delta: 0 },
-        { label: 'つや消し 青', color_hex: '#7a92a8', price_delta: 100 },
-        { label: 'つや消し 白', color_hex: '#eef0f0', price_delta: 100 },
-        { label: 'つや消し 黒', color_hex: '#2b2b2b', price_delta: 100 },
-        { label: 'つや消し 緑', color_hex: '#5f7a5a', price_delta: 100 },
       ],
     },
     {

@@ -118,6 +118,7 @@ function renderPartStep(part) {
 
   const swatches = document.createElement('div');
   swatches.className = 'swatches';
+  if (PHOTO_OPTIONS_BY_PART[part.key]) swatches.classList.add('swatches-photo');
 
   part.part_options.forEach((option) => {
     const cell = document.createElement('div');
