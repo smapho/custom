@@ -1,0 +1,8 @@
+{
+  "name": "custom-jersey-builder",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "seed": "node scripts/seed.mjs"
+  }
+}

@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Custom Jersey Builder</title>
+<link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="site-header">
+  <h1>MY JERSEY MAKER</h1>
+  <p class="tagline">オリジナルジャージを自分だけの色でつくる</p>
+</header>
+
+<main class="builder" id="builder">
+  <section class="preview-pane">
+    <div class="preview-stage">
+      <svg id="jersey-svg" viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg" aria-label="ジャージプレビュー">
+        <!-- sleeves (behind body) -->
+        <path id="part-sleeve" data-part="sleeve"
+          d="M100,90 L40,130 Q20,145 30,175 L60,240 L110,205 L100,90 Z
+             M300,90 L360,130 Q380,145 370,175 L340,240 L290,205 L300,90 Z"
+          fill="#3a3a3a" stroke="#1c1c1c" stroke-width="3" />
+
+        <!-- body -->
+        <path id="part-body" data-part="body"
+          d="M140,70
+             Q200,110 260,70
+             L300,95
+             L285,215
+             L285,460
+             Q200,480 115,460
+             L115,215
+             L100,95
+             Z"
+          fill="#2b6cb0" stroke="#1c1c1c" stroke-width="3" />
+
+        <!-- side accent stripes -->
+        <path id="part-sideline" data-part="sideline"
+          d="M118,220 L118,455 L134,458 L134,222 Z
+             M266,222 L266,458 L282,455 L282,220 Z"
+          fill="#ffffff" />
+
+        <!-- collar -->
+        <path id="part-collar" data-part="collar"
+          d="M150,68 Q200,105 250,68 L242,88 Q200,120 158,88 Z"
+          fill="#ffffff" stroke="#1c1c1c" stroke-width="2" />
+
+        <!-- number -->
+        <text id="jersey-number" x="200" y="330" text-anchor="middle"
+          font-family="Arial, sans-serif" font-weight="700" font-size="90"
+          fill="#ffffff" stroke="#1c1c1c" stroke-width="2">1</text>
+      </svg>
+    </div>
+    <div class="price-box">
+      <span class="price-label">お見積り価格</span>
+      <span class="price-value" id="price-value">¥0</span>
+    </div>
+  </section>
+
+  <aside class="sidebar" id="sidebar">
+    <div id="parts-container" class="parts-container">
+      <p class="loading">読み込み中...</p>
+    </div>
+
+    <div class="option-group">
+      <h2>背番号</h2>
+      <input type="text" id="custom-number" maxlength="2" value="1" inputmode="numeric" />
+    </div>
+
+    <div class="option-group">
+      <h2>デザイン名（任意）</h2>
+      <input type="text" id="design-name" placeholder="例）自主練用" maxlength="40" />
+    </div>
+
+    <button id="save-btn" class="save-btn">このデザインを保存する</button>
+    <p id="save-result" class="save-result"></p>
+  </aside>
+</main>
+
+<script type="module" src="/js/app.js"></script>
+</body>
+</html>
